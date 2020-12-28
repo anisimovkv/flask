@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h3>Hello template {{ v }}</h3>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}
+Bla bla bla title
+{% endblock %}
+
+{% block content_title %}
+bla content_title
+{% endblock %}
+
+{% block content %}
+Some content bla bla bal
+{% endblock %}
