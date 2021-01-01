@@ -19,10 +19,13 @@ Blueprint Content
         <h5 class="card-title">{{ post.title }}</h5>
         <p class="card-text">{{ post.body[:50] }}</p>
 
-        <a href="{{ url_for('posts.post_detail', slug=post.slug) }}" class="btn btn-outline-info">Read</a>
+        <a href="{{ url_for('posts.post_detail', slug=post.slug) }}"
+           class="btn btn-outline-info">Read</a>
     </div>
     <div class="card-footer">
-        bla bla bla
+        {% for tag in post.tags %}
+        <a href="{{ url_for('posts.tag_detail', slug=tag.slug) }}" class="btn btn-link btn-sm">{{ tag.name }}</a>
+        {% endfor %}
     </div>
 </div>
 
