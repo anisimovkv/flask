@@ -1,17 +1,21 @@
 from flask import Blueprint
 from flask import render_template
+from flask import request
 
 from ..model import Post, Tag
 
 posts = Blueprint('posts', __name__, template_folder='templates')
 
 
-# search_word = 'blblblb'
-# Post.query.filter(Post.title.ilike('%{search_word}%')).all()
-
 @posts.route('/')
 def index():
-    posts_list = Post.query.all()
+    search_word = request.args.get('search')
+    if search_word:
+        posts_list = Post.query.filter(
+            Post.title.ilike(f'%{search_word}%') |
+            Post.body.ilike(f'%{search_word}%')).all()
+    else:
+        posts_list = Post.query.all()
     return render_template('posts/post_index.html', posts=posts_list)
 
 

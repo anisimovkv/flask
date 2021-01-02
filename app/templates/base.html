@@ -56,9 +56,10 @@
                        aria-disabled="true">Disabled</a>
                 </li>
             </ul>
-            <form class="d-flex">
+            <form class="d-flex" method="GET">
                 <input class="form-control me-2" type="search"
-                       placeholder="Search" aria-label="Search">
+                       placeholder="Search" aria-label="Search"
+                       name="search" value="{{ request.args.get('search', '') }}">
                 <button class="btn btn-outline-success" type="submit">Search
                 </button>
             </form>
