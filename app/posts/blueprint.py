@@ -33,13 +33,24 @@ def post_create():
 @posts.route('/')
 def index():
     search_word = request.args.get('search')
-    if search_word:
-        posts_list = Post.query.filter(
-            Post.title.ilike(f'%{search_word}%') |
-            Post.body.ilike(f'%{search_word}%')).all()
+    raw_page: str = request.args.get('page')
+    if raw_page and raw_page.isdigit():
+        page: int = int(raw_page)
     else:
-        posts_list = Post.query.order_by(Post.date_created.desc())
-    return render_template('posts/post_index.html', posts=posts_list)
+        page = 1
+
+    if search_word:
+        posts_objects = Post.query.filter(
+            Post.title.ilike(f'%{search_word}%') |
+            Post.body.ilike(f'%{search_word}%'))  # .all()
+    else:
+        posts_objects = Post.query.order_by(Post.date_created.desc())
+
+    pages = posts_objects.paginate(page=page, per_page=3)
+    iter_pages = pages.iter_pages()
+
+    return render_template(
+        'posts/post_index.html', posts=posts_objects, pages=pages)
 
 
 @posts.route('/<slug>')
