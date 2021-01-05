@@ -1,7 +1,9 @@
 import re
 from datetime import datetime
-from .app import db
+
 from sqlalchemy.schema import Column, Table
+
+from .app import db
 
 
 def slugify(string: str) -> str:
@@ -38,7 +40,7 @@ class Post(db.Model):
             self.slug = slugify(self.title)
 
     def __repr__(self):
-        return f'<Post id {self.id}, title {self.title}>'
+        return f'{self.title}'
 
 
 class Tag(db.Model):
@@ -51,4 +53,4 @@ class Tag(db.Model):
         self.slug = slugify(self.name)
 
     def __repr__(self):
-        return f'<Tag id {self.id}, title {self.name}>'
+        return f'{self.name}'

@@ -1,13 +1,13 @@
 from flask import Blueprint
+from flask import redirect
 from flask import render_template
 from flask import request
-from flask import redirect
 from flask import url_for
 from sqlalchemy import exc
 
-from ..model import Post, Tag
-from ..app import db
 from .forms import PostForm
+from ..app import db
+from ..model import Post, Tag
 
 posts = Blueprint('posts', __name__, template_folder='templates')
 
