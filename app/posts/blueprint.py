@@ -30,6 +30,21 @@ def post_create():
     return render_template('posts/post_create.html', form=form)
 
 
+@posts.route('/<slug>/edit/', methods=['POST', 'GET'])
+def post_edit(slug):
+    post = Post.query.filter(Post.slug == slug).first()
+    if request.method == 'POST':
+        form: PostForm = PostForm(formdata=request.form, obj=post)
+        form.populate_obj(post)
+        try:
+            db.session.commit()
+        except exc.SQLAlchemyError as e:
+            print(e)
+        return redirect(url_for('posts.post_detail', slug=post.slug))
+    form = PostForm(obj=post)
+    return render_template('posts/post_edit.html', post=post, form=form)
+
+
 @posts.route('/')
 def index():
     search_word = request.args.get('search')
@@ -47,7 +62,6 @@ def index():
         posts_objects = Post.query.order_by(Post.date_created.desc())
 
     pages = posts_objects.paginate(page=page, per_page=3)
-    iter_pages = pages.iter_pages()
 
     return render_template(
         'posts/post_index.html', posts=posts_objects, pages=pages)
