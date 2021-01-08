@@ -3,6 +3,7 @@ from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
+from flask_security import login_required
 from sqlalchemy import exc
 
 from .forms import PostForm
@@ -13,6 +14,7 @@ posts = Blueprint('posts', __name__, template_folder='templates')
 
 
 @posts.route('/create', methods=['GET', 'POST'])
+@login_required
 def post_create():
     if request.method == 'POST':
         title = request.form.get('title')
@@ -31,6 +33,7 @@ def post_create():
 
 
 @posts.route('/<slug>/edit/', methods=['POST', 'GET'])
+@login_required
 def post_edit(slug):
     post = Post.query.filter(Post.slug == slug).first()
     if request.method == 'POST':
